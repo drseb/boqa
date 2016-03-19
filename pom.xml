@@ -20,13 +20,13 @@
                         <groupId>ontologizer</groupId>
                         <artifactId>colt</artifactId>
                         <version>1.2.0</version>
-                </dependency>
+                </dependency>       
                  <dependency>
                         <groupId>ontologizer</groupId>
                         <artifactId>commons-cli</artifactId>
                         <version>1.2</version>
                 </dependency>
-                 -->
+          -->
 		<dependency>
 			<groupId>com.beust</groupId>
 			<artifactId>jcommander</artifactId>
@@ -144,9 +144,7 @@
 										<artifactId>
 											build-helper-maven-plugin
 										</artifactId>
-										<versionRange>
-											[1.9.1,)
-										</versionRange>
+										<versionRange>[1.8,)</versionRange>
 										<goals>
 											<goal>add-source</goal>
 										</goals>
