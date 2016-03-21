@@ -39,7 +39,7 @@ public class BoqaService {
 			String line = null;
 			/*
 			 * We have had some encoding issues. I.e. BOQA uses ontologizer-api for parsing the annotation data. This uses the names as
-			 * primary identifiers and does not handle encding correctly.
+			 * primary identifiers and does not handle encoding correctly.
 			 * 
 			 * Also we check here if the file has been made name-unique, i.e. the name must be unique among the entries
 			 */
