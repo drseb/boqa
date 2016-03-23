@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import ontologizer.association.AssociationContainer;
 import ontologizer.association.AssociationParser;
+import ontologizer.association.AssociationParser.Type;
 import ontologizer.go.OBOParser;
 import ontologizer.go.OBOParserException;
 import ontologizer.go.Ontology;
@@ -91,6 +92,7 @@ public class BOQACore {
 		/* Load associations */
 		AssociationContainer localAssociations;
 		try {
+			AssociationParser.setUserdefinedType(Type.PAF);
 			AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
 			localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
 		} catch (IOException e) {
