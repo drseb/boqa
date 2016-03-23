@@ -91,7 +91,7 @@ public class BOQACore {
 		/* Load associations */
 		AssociationContainer localAssociations;
 		try {
-			AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermContainer());
+			AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
 			localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
 		} catch (IOException e) {
 			e.printStackTrace();
