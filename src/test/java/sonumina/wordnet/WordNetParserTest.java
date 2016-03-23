@@ -1,14 +1,14 @@
 package sonumina.wordnet;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import ontologizer.association.Association;
 import ontologizer.association.AssociationContainer;
@@ -17,13 +17,9 @@ import ontologizer.go.Term;
 import ontologizer.go.TermContainer;
 import ontologizer.go.TermID;
 import ontologizer.types.ByteString;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import sonumina.boqa.calculation.BOQA;
-import sonumina.math.graph.SlimDirectedGraphView;
 import sonumina.math.graph.AbstractGraph.DotAttributesProvider;
+import sonumina.math.graph.SlimDirectedGraphView;
 
 public class WordNetParserTest
 {
@@ -67,7 +63,7 @@ public class WordNetParserTest
 	public void testWordnetParser() throws IOException
 	{
 		TermContainer tc = WordNetParser.parserWordnet("WordNet-3.0/dict/data.noun");
-		Ontology ontology = new Ontology(tc);
+		Ontology ontology = Ontology.create(tc);
 		
 		Set<TermID> ts = new HashSet<TermID>();
 //		ts.addAll(ontology.getTermsOfInducedGraph(null, ontology.getTerm("WNO:09571693").getID())); /* Orion */
@@ -76,7 +72,7 @@ public class WordNetParserTest
 		ts.addAll(ontology.getTermsOfInducedGraph(null, ontology.getTerm("WNO:05560787").getID()));	/* Leg */
 		
 		
-		ontology.getGraph().writeDOT(new FileOutputStream(new File("test.dot")), ontology.getSetOfTermsFromSetOfTermIds(ts), new DotAttributesProvider<Term>()
+		ontology.getGraph().writeDOT(new FileOutputStream(new File("test.dot")), ontology.termSet(ts), new DotAttributesProvider<Term>()
 				{
 					@Override
 					public String getDotNodeAttributes(Term vt)
@@ -92,7 +88,7 @@ public class WordNetParserTest
 		Random rnd = new Random(2);
 
 		TermContainer tc = WordNetParser.parserWordnet("WordNet-3.0/dict/data.noun");
-		Ontology ontology = new Ontology(tc);
+		Ontology ontology = Ontology.create(tc);
 		SlimDirectedGraphView<Term> slim = ontology.getSlimGraphView();
 
 		AssociationContainer assocs = new AssociationContainer();

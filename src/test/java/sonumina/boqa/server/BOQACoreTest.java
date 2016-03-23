@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.Assert;
 import ontologizer.go.Term;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class BOQACoreTest
