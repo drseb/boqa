@@ -85,7 +85,7 @@ public class BOQACore {
 		TermContainer goTerms = new TermContainer(oboParser.getTermMap(), oboParser.getFormatVersion(), oboParser.getDate());
 		logger.info("OBO file \"" + definitionPath + "\" parsed");
 
-		Ontology localOntology = new Ontology(goTerms);
+		Ontology localOntology = Ontology.create(goTerms);
 		logger.info("Ontology graph with " + localOntology.getNumberOfTerms() + " terms created");
 
 		/* Load associations */
