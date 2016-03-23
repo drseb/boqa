@@ -4,17 +4,14 @@
 	<artifactId>boqa</artifactId>
 	<groupId>boqa</groupId>
 	<version>0.2-SNAPSHOT</version>
-
+	<dependencies>
+	<dependency>
+                        <groupId>ontologizer</groupId>
+                        <artifactId>ontologizer</artifactId>
+                        <version>0.1.0-SNAPSHOT</version>
+                </dependency>
 	<!-- Our local repository. We won't like to depend on external ones so - 
 	     the software can be still compiled with Eclipse without a Maven - plugin -->
-	<repositories>
-		<repository>
-			<id>ontologizer-dependency-repo</id>
-			<url>file://${basedir}/ontologizer.src/local-maven-repo</url>
-		</repository>
-	</repositories>
-
-        <dependencies>
         <!-- 
                 <dependency>
                         <groupId>ontologizer</groupId>
@@ -35,7 +32,7 @@
                 <dependency>
                  <groupId>junit</groupId>
                  <artifactId>junit</artifactId>
-                 <version>4.8.2</version>
+                 <version>4.12</version>
                  <scope>test</scope>
                 </dependency>
         </dependencies>
@@ -102,6 +99,9 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration> <!-- add this to disable checking -->
+                <additionalparam>-Xdoclint:none</additionalparam>
+            </configuration>
 					</execution>
 				</executions>
 			</plugin>

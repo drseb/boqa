@@ -85,13 +85,13 @@ public class BOQACore {
 		TermContainer goTerms = new TermContainer(oboParser.getTermMap(), oboParser.getFormatVersion(), oboParser.getDate());
 		logger.info("OBO file \"" + definitionPath + "\" parsed");
 
-		Ontology localOntology = new Ontology(goTerms);
+		Ontology localOntology = Ontology.create(goTerms);
 		logger.info("Ontology graph with " + localOntology.getNumberOfTerms() + " terms created");
 
 		/* Load associations */
 		AssociationContainer localAssociations;
 		try {
-			AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermContainer(), null, null);
+			AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
 			localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
 		} catch (IOException e) {
 			e.printStackTrace();
