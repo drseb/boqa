@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import ontologizer.association.AssociationParser.Type;
 import ontologizer.go.Ontology;
 import ontologizer.go.Term;
 import sonumina.boqa.server.BOQACore;
@@ -80,6 +81,7 @@ public class BoqaService {
 		}
 
 		System.out.println("init new BoqaService");
+		BOQACore.setAssociationFileType(Type.PAF);
 		boqaCore = new BOQACore(hpOboFilePath, annotationFilePath);
 		this.ontology = boqaCore.getOntology();
 	}

@@ -37,6 +37,8 @@ public class BOQACore {
 
 	public static String debugThis;
 
+	private static Type associationFileType;
+
 	/**
 	 * The boqa object
 	 */
@@ -92,7 +94,10 @@ public class BOQACore {
 		/* Load associations */
 		AssociationContainer localAssociations;
 		try {
-			AssociationParser.setUserdefinedType(Type.PAF);
+
+			if (associationFileType.equals(Type.PAF)) {
+				AssociationParser.setUserdefinedType(Type.PAF);
+			}
 			AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
 			localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
 		} catch (IOException e) {
@@ -427,6 +432,15 @@ public class BOQACore {
 
 	public SlimDirectedGraphView<Term> getOntologySlim() {
 		return this.slimGraph;
+	}
+
+	/**
+	 * Currently on PAF is supported. If not PAF is given the standard ontologizer AssociationParser behaviour is used.
+	 * 
+	 * @param type
+	 */
+	public static void setAssociationFileType(Type type) {
+		associationFileType = type;
 	}
 
 }
