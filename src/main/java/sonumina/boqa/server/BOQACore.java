@@ -97,10 +97,18 @@ public class BOQACore {
 
 			if (associationFileType.equals(Type.PAF)) {
 				AssociationParser.setUserdefinedType(Type.PAF);
+				AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
+				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
 			}
-			AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
-			localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
-		} catch (IOException e) {
+			else {
+				AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
+				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
+			}
+		} catch (
+
+		IOException e)
+
+		{
 			e.printStackTrace();
 			localAssociations = new AssociationContainer();
 		}
