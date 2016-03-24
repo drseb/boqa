@@ -1250,6 +1250,7 @@ public class BOQA {
 		 * If we want to consider items with frequencies only, we like to shrink the item list to contain only the relevant items.
 		 */
 		if (CONSIDER_FREQUENCIES_ONLY) {
+			System.out.println("WARNING: only considering items with frequency information");
 			int oldSize = allItemList.size();
 
 			itemsToBeConsidered = new HashSet<ByteString>();
@@ -1458,13 +1459,15 @@ public class BOQA {
 
 		PopulationSet allItems = new PopulationSet("all");
 		allItems.addGenes(allItemsToBeConsidered);
+
 		termEnumerator = allItems.enumerateGOTerms(graph, assoc, evidences != null ? evidences.keySet() : null);
 		ItemEnumerator itemEnumerator = ItemEnumerator.createFromTermEnumerator(termEnumerator);
 
 		/* Term stuff */
-		// fix by sebastian
+		/* fix by sebastian / I removed the following two lines */
 		// Ontology inducedGraph = graph.getInducedGraph(termEnumerator.getAllAnnotatedTermsAsList());
 		// slimGraph = inducedGraph.getSlimGraphView();
+		/* the following line is required to not break the system when terms are in the query that have not been seen before */
 		slimGraph = graph.getSlimGraphView();
 
 		term2Parents = slimGraph.vertexParents;
