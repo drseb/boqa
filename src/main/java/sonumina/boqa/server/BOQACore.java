@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import ontologizer.association.AssociationContainer;
 import ontologizer.association.AssociationParser;
+import ontologizer.association.AssociationParser.Type;
 import ontologizer.go.OBOParser;
 import ontologizer.go.OBOParserException;
 import ontologizer.go.Ontology;
@@ -35,6 +36,8 @@ public class BOQACore {
 	static int numberOfThreads = Runtime.getRuntime().availableProcessors();
 
 	public static String debugThis;
+
+	private static Type associationFileType;
 
 	/**
 	 * The boqa object
@@ -85,14 +88,22 @@ public class BOQACore {
 		TermContainer goTerms = new TermContainer(oboParser.getTermMap(), oboParser.getFormatVersion(), oboParser.getDate());
 		logger.info("OBO file \"" + definitionPath + "\" parsed");
 
-		Ontology localOntology = new Ontology(goTerms);
+		Ontology localOntology = Ontology.create(goTerms);
 		logger.info("Ontology graph with " + localOntology.getNumberOfTerms() + " terms created");
 
 		/* Load associations */
 		AssociationContainer localAssociations;
 		try {
-			AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
-			localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
+
+			if (associationFileType.equals(Type.PAF)) {
+				AssociationParser.setUserdefinedType(Type.PAF);
+				AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
+				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
+			}
+			else {
+				AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
+				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			localAssociations = new AssociationContainer();
@@ -425,6 +436,15 @@ public class BOQACore {
 
 	public SlimDirectedGraphView<Term> getOntologySlim() {
 		return this.slimGraph;
+	}
+
+	/**
+	 * Currently on PAF is supported. If not PAF is given the standard ontologizer AssociationParser behaviour is used.
+	 * 
+	 * @param type
+	 */
+	public static void setAssociationFileType(Type type) {
+		associationFileType = type;
 	}
 
 }

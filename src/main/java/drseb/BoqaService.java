@@ -1,85 +1,37 @@
 package drseb;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import ontologizer.association.AssociationParser.Type;
 import ontologizer.go.Ontology;
 import ontologizer.go.Term;
 import sonumina.boqa.server.BOQACore;
 import sonumina.boqa.server.ItemResultEntry;
 
 /**
- * BOQA-Wrapper
+ * BOQA-Wrapper for phenotype association files.
  * 
  * @author Sebastian Koehler
  *
  */
 public class BoqaService {
 
+	private final Pattern boqaIdAndNameField = Pattern.compile("^(.+) \\((.+:\\d+)\\)$");
+
 	private BOQACore boqaCore;
 	private Ontology ontology;
-	private HashMap<String, String> itemName2itemRealId;
+	// private HashMap<String, String> itemName2itemRealId;
 
 	public BoqaService(String hpOboFilePath, String annotationFilePath) {
 
-		/*
-		 * SBA has taken the item name (e.g. "SPASTIC DIPLEGIA, INFANTILE TYPE") as primary key, so that we loose the items original id
-		 * "OMIM:270600". Now we create a mapping for this purpose!
-		 */
-		itemName2itemRealId = new HashMap<String, String>();
-		try {
-
-			BufferedReader in = new BufferedReader(new FileReader(annotationFilePath));
-			String line = null;
-			/*
-			 * We have had some encoding issues. I.e. BOQA uses ontologizer-api for parsing the annotation data. This uses the names as
-			 * primary identifiers and does not handle encoding correctly.
-			 * 
-			 * Also we check here if the file has been made name-unique, i.e. the name must be unique among the entries
-			 */
-			HashMap<String, String> name2id = new HashMap<String, String>();
-			while ((line = in.readLine()) != null) {
-
-				String[] split = line.split("\t");
-				String itemName = split[2];
-				// fix encoding issues
-				itemName = itemName.replaceAll("[^\\x00-\\x7F]", "");
-
-				String realItemId = split[0] + ":" + split[1];
-				if (itemName2itemRealId.containsKey(itemName)) {
-					if (itemName2itemRealId.get(itemName).equals(realItemId)) {
-						continue;
-					}
-					else {
-						throw new RuntimeException("error: NON-unique name2id mapping " + itemName + " -> " + itemName2itemRealId.get(itemName)
-								+ " versus: " + realItemId);
-					}
-				}
-
-				itemName2itemRealId.put(itemName, realItemId);
-
-				// check for unique name->id mappings
-				String id = split[0] + split[1]; // db + id in db
-				if (name2id.containsKey(itemName)) {
-					if (!id.equals(name2id.get(itemName))) {
-						throw new RuntimeException(
-								"file is not name-unique! will abort now! name: " + itemName + " id1: " + id + " id2: " + name2id.get(itemName));
-					}
-				}
-			}
-			in.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 		System.out.println("init new BoqaService");
+		BOQACore.setAssociationFileType(Type.PAF);
 		boqaCore = new BOQACore(hpOboFilePath, annotationFilePath);
 		this.ontology = boqaCore.getOntology();
 	}
@@ -107,16 +59,19 @@ public class BoqaService {
 			int boqaId = resultList.get(i).getItemId();
 
 			String boqaIdStr = boqaId + "";
-			String itemName = boqaCore.getItemName(boqaId);
-			itemName = itemName.replaceAll("[^\\x00-\\x7F]", "");
-
-			if (!itemName2itemRealId.containsKey(itemName)) {
-				throw new RuntimeException("It should not happen that we cannot map item-name " + itemName + " to its id. Fix that!");
-			}
-			String itemRealId = itemName2itemRealId.get(itemName);
+			String idAndName = boqaCore.getItemName(boqaId);
 			double score = resultList.get(i).getScore();
 
-			geneId2resultListSimple.put(boqaIdStr, new ResultEntry(boqaIdStr, itemRealId, itemName, score));
+			Matcher m = boqaIdAndNameField.matcher(idAndName);
+			if (m.find()) {
+				String diseaseName = m.group(1);
+				String dbAndId = m.group(2);
+				geneId2resultListSimple.put(boqaIdStr, new ResultEntry(boqaIdStr, dbAndId, diseaseName, score));
+			}
+			else {
+				System.err.println("no match of pattern " + boqaIdAndNameField.pattern() + " in " + idAndName);
+			}
+
 		}
 
 		return geneId2resultListSimple;
@@ -215,6 +170,18 @@ public class BoqaService {
 
 	public static void setPrintBoqa(String soughtOmim) {
 		BOQACore.debugThis = soughtOmim;
+	}
+
+	public void scoreItemsForTestQuery() {
+		HashSet<Term> query = new HashSet<Term>();
+		int c = 0;
+		for (Term t : ontology) {
+			query.add(t);
+			if (++c > 5)
+				break;
+		}
+
+		scoreItems(query);
 	}
 
 }
