@@ -1689,19 +1689,14 @@ public class BOQA {
 				f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
 			}
 			else {
+				// revision because new frequency identifiers apply now
 				if (freq.equalsIgnoreCase("very rare"))
-					f = 0.01;
-				else if (freq.equalsIgnoreCase("rare"))
-					f = 0.05;
+					f = 0.02;
 				else if (freq.equalsIgnoreCase("occasional"))
-					f = 0.075;
+					f = 0.1;
 				else if (freq.equalsIgnoreCase("frequent"))
-					f = 0.33;
-				else if (freq.equalsIgnoreCase("typical"))
-					f = 0.50;
-				else if (freq.equalsIgnoreCase("common"))
-					f = 0.75;
-				else if (freq.equalsIgnoreCase("hallmark"))
+					f = 0.5;
+				else if (freq.equalsIgnoreCase("very frequent"))
 					f = 0.90;
 				else if (freq.equalsIgnoreCase("obligate"))
 					f = 1;
