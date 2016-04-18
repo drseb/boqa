@@ -4,7 +4,29 @@
 	<artifactId>boqa</artifactId>
 	<groupId>boqa</groupId>
 	<version>0.2-SNAPSHOT</version>
+	
+	<repositories>
+        <repository>
+            <id>compbio</id>
+            <url>http://compbio.charite.de/tl_files/maven</url>
+        </repository>
+    </repositories>
+	
+	
+	 <distributionManagement>
+    <snapshotRepository>
+      <id>ssh-repository</id>
+      <url>scpexe://compbio:/var/www/tl_files/maven/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+	
 	<dependencies>
+	<dependency>
+            <groupId>ontologizer</groupId>
+            <artifactId>ontologizer</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
 		<dependency>
 			<groupId>com.beust</groupId>
 			<artifactId>jcommander</artifactId>
@@ -20,6 +42,16 @@
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+
+		<extensions>
+  		<!-- Enabling the use of SSH -->
+      		<extension>
+		        <groupId>org.apache.maven.wagon</groupId>
+		        <artifactId>wagon-ssh-external</artifactId>
+		         <version>2.10</version>
+      		</extension>
+    	</extensions>
+
 
 		<plugins>
 			<plugin>
