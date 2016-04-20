@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2013 Sebastian Bauer
+/* Copyright (c) 2010-2016 Sebastian Bauer & Sebastian Köhler
  *
  * All rights reserved.
  *
@@ -111,6 +111,7 @@ import sonumina.math.graph.SlimDirectedGraphView;
  * Refer to the BOQATest class for a working example usage.
  * 
  * @author Sebastian Bauer
+ * @author Sebastian Köhler
  * 
  * @see setup, getTermIndex, sonumina.boqa.tests.BOQATest
  * 
@@ -212,6 +213,7 @@ public class BOQA {
 	/** Used to parse frequency information */
 	public static Pattern frequencyPattern = Pattern.compile("(\\d+)\\.?(\\d*)\\s*%");
 	public static Pattern frequencyFractionPattern = Pattern.compile("(\\d+)/(\\d+)");
+	public static Pattern NofMPattern = Pattern.compile("^(\\d+) of (\\d+)$");
 
 	/* Settings for generation of random data */
 	// private final double ALPHA = 0.002; // 0.01
@@ -1682,28 +1684,45 @@ public class BOQA {
 
 			f = Double.parseDouble(matcher.group(1)) + Double.parseDouble(fractionalPart) / Math.pow(10, fractionalPart.length());
 			f /= 100.0;
+			return f;
 		}
-		else {
-			matcher = frequencyFractionPattern.matcher(freq);
-			if (matcher.matches()) {
-				f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
-			}
-			else {
-				// revision because new frequency identifiers apply now
-				if (freq.equalsIgnoreCase("very rare"))
-					f = 0.02;
-				else if (freq.equalsIgnoreCase("occasional"))
-					f = 0.1;
-				else if (freq.equalsIgnoreCase("frequent"))
-					f = 0.5;
-				else if (freq.equalsIgnoreCase("very frequent"))
-					f = 0.90;
-				else if (freq.equalsIgnoreCase("obligate"))
-					f = 1;
-				else
-					System.err.println("Unknown frequency identifier: " + freq);
-			}
+		matcher = frequencyFractionPattern.matcher(freq);
+		// 12/30
+		if (matcher.matches()) {
+			f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
+			return f;
 		}
+		// 12 of 30
+		matcher = NofMPattern.matcher(freq);
+		if (matcher.matches()) {
+			f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
+			return f;
+		}
+
+		// replace some of the legacy wordings:
+		if (freq.equalsIgnoreCase("typical") || freq.equalsIgnoreCase("common") || freq.equalsIgnoreCase("variable")) {
+			freq = "frequent";
+		}
+		if (freq.equalsIgnoreCase("hallmark")) {
+			freq = "very frequent";
+		}
+		if (freq.equalsIgnoreCase("rare")) {
+			freq = "occasional";
+		}
+
+		// revision because new frequency identifiers apply now
+		if (freq.equalsIgnoreCase("very rare"))
+			f = 0.02;
+		else if (freq.equalsIgnoreCase("occasional"))
+			f = 0.1;
+		else if (freq.equalsIgnoreCase("frequent"))
+			f = 0.5;
+		else if (freq.equalsIgnoreCase("very frequent"))
+			f = 0.90;
+		else if (freq.equalsIgnoreCase("obligate"))
+			f = 1;
+		else
+			System.err.println("Unknown frequency identifier: " + freq);
 		return f;
 	}
 
