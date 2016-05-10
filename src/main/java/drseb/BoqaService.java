@@ -39,12 +39,49 @@ public class BoqaService {
 	/**
 	 * Determines the score for each item for the given query.
 	 * 
+	 * @param queryTerm
+	 *            List of Term-IDs
+	 * @return
+	 */
+	public HashMap<String, ResultEntry> scoreItems(ArrayList<String> queryTermIds) {
+
+		HashSet<Term> queryTerms = getQueryTerms(queryTermIds);
+		return scoreItems(queryTerms);
+	}
+
+	private HashSet<Term> getQueryTerms(ArrayList<String> queryTermIds) {
+		if (queryTermIds == null || queryTermIds.size() < 1) {
+			throw new IllegalArgumentException("given query term-ids invalid: " + queryTermIds);
+		}
+
+		HashSet<Term> queryTerms = new HashSet<>();
+		for (String id : queryTermIds) {
+			Term t = ontology.getTermIncludingAlternatives(id);
+			if (t != null) {
+				queryTerms.add(t);
+			}
+			else {
+				System.err.println("could not find : " + id + " in ontoloy");
+			}
+		}
+		if (queryTerms.size() < 1) {
+			throw new IllegalArgumentException("could not map any of the given query-ids to term-objects: " + queryTermIds);
+		}
+		return queryTerms;
+	}
+
+	/**
+	 * Determines the score for each item for the given query.
+	 * 
 	 * @param queryTerms
 	 * @return
 	 */
 	public HashMap<String, ResultEntry> scoreItems(HashSet<Term> queryTerms) {
 
-		System.out.println("calling rank on " + queryTerms);
+		if (queryTerms == null || queryTerms.size() < 1) {
+			throw new IllegalArgumentException("given query terms invalid: " + queryTerms);
+		}
+
 		List<Integer> queryAsBoqaIndices = new ArrayList<Integer>();
 		for (Term queryTerm : queryTerms) {
 			int id = boqaCore.getIdOfTerm(queryTerm);
@@ -84,12 +121,22 @@ public class BoqaService {
 	 * @return
 	 */
 	public ArrayList<ResultEntry> rankItems(HashSet<Term> queryTerms) {
+
+		if (queryTerms == null || queryTerms.size() < 1) {
+			throw new IllegalArgumentException("given query terms invalid: " + queryTerms);
+		}
+
 		HashMap<String, ResultEntry> scored = scoreItems(queryTerms);
 
 		ArrayList<ResultEntry> results = new ArrayList<BoqaService.ResultEntry>(scored.values());
 		Collections.sort(results);
 
 		return results;
+	}
+
+	public ArrayList<ResultEntry> rankItems(ArrayList<String> queryTermIds) {
+		HashSet<Term> queryTerms = getQueryTerms(queryTermIds);
+		return rankItems(queryTerms);
 	}
 
 	public Ontology getOntology() {
