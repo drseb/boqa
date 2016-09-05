@@ -85,7 +85,7 @@ public class BOQACore {
 		} catch (OBOParserException e1) {
 			e1.printStackTrace();
 		}
-		TermContainer goTerms = new TermContainer(oboParser.getTermMap(), oboParser.getFormatVersion(), oboParser.getDate());
+		TermContainer goTerms = new TermContainer(oboParser.getTermMap(), oboParser.getFormatVersion(), oboParser.getDataVersion());
 		logger.info("OBO file \"" + definitionPath + "\" parsed");
 
 		Ontology localOntology = Ontology.create(goTerms);
