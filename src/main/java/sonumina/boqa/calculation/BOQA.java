@@ -76,6 +76,7 @@ import ontologizer.go.Term;
 import ontologizer.go.TermID;
 import ontologizer.set.PopulationSet;
 import ontologizer.types.ByteString;
+import ontologizer.util.OntologyConstants;
 import sonumina.algorithms.Algorithms;
 import sonumina.boqa.server.BOQACore;
 import sonumina.math.distribution.ApproximatedEmpiricalDistribution;
@@ -1671,59 +1672,67 @@ public class BOQA {
 	 * @return
 	 */
 	private double getFrequencyFromString(String freq) {
-		double f = 1.0;
-
-		if (freq == null || freq.length() == 0)
-			return 1.0;
-
-		Matcher matcher = frequencyPattern.matcher(freq);
-		if (matcher.matches()) {
-			String fractionalPart = matcher.group(2);
-			if (fractionalPart == null || fractionalPart.length() == 0)
-				fractionalPart = "0";
-
-			f = Double.parseDouble(matcher.group(1)) + Double.parseDouble(fractionalPart) / Math.pow(10, fractionalPart.length());
-			f /= 100.0;
-			return f;
-		}
-		matcher = frequencyFractionPattern.matcher(freq);
-		// 12/30
-		if (matcher.matches()) {
-			f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
-			return f;
-		}
-		// 12 of 30
-		matcher = NofMPattern.matcher(freq);
-		if (matcher.matches()) {
-			f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
-			return f;
-		}
-
-		// replace some of the legacy wordings:
-		if (freq.equalsIgnoreCase("typical") || freq.equalsIgnoreCase("common") || freq.equalsIgnoreCase("variable")) {
-			freq = "frequent";
-		}
-		if (freq.equalsIgnoreCase("hallmark")) {
-			freq = "very frequent";
-		}
-		if (freq.equalsIgnoreCase("rare")) {
-			freq = "occasional";
-		}
-
-		// revision because new frequency identifiers apply now
-		if (freq.equalsIgnoreCase("very rare"))
-			f = 0.02;
-		else if (freq.equalsIgnoreCase("occasional"))
-			f = 0.1;
-		else if (freq.equalsIgnoreCase("frequent"))
-			f = 0.5;
-		else if (freq.equalsIgnoreCase("very frequent"))
-			f = 0.90;
-		else if (freq.equalsIgnoreCase("obligate"))
-			f = 1;
-		else
-			System.err.println("Unknown frequency identifier: " + freq);
-		return f;
+		
+		double d = OntologyConstants.frequencyOboId2double(freq);
+		
+		if (! (d>=0 || d<=1))
+			System.err.println("problem converting: "+freq);
+		
+		return d;
+		
+//		double f = 1.0;
+//
+//		if (freq == null || freq.length() == 0)
+//			return 1.0;
+//
+//		Matcher matcher = frequencyPattern.matcher(freq);
+//		if (matcher.matches()) {
+//			String fractionalPart = matcher.group(2);
+//			if (fractionalPart == null || fractionalPart.length() == 0)
+//				fractionalPart = "0";
+//
+//			f = Double.parseDouble(matcher.group(1)) + Double.parseDouble(fractionalPart) / Math.pow(10, fractionalPart.length());
+//			f /= 100.0;
+//			return f;
+//		}
+//		matcher = frequencyFractionPattern.matcher(freq);
+//		// 12/30
+//		if (matcher.matches()) {
+//			f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
+//			return f;
+//		}
+//		// 12 of 30
+//		matcher = NofMPattern.matcher(freq);
+//		if (matcher.matches()) {
+//			f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
+//			return f;
+//		}
+//
+//		// replace some of the legacy wordings:
+//		if (freq.equalsIgnoreCase("typical") || freq.equalsIgnoreCase("common") || freq.equalsIgnoreCase("variable")) {
+//			freq = "frequent";
+//		}
+//		if (freq.equalsIgnoreCase("hallmark")) {
+//			freq = "very frequent";
+//		}
+//		if (freq.equalsIgnoreCase("rare")) {
+//			freq = "occasional";
+//		}
+//
+//		// revision because new frequency identifiers apply now
+//		if (freq.equalsIgnoreCase("very rare"))
+//			f = 0.02;
+//		else if (freq.equalsIgnoreCase("occasional"))
+//			f = 0.1;
+//		else if (freq.equalsIgnoreCase("frequent"))
+//			f = 0.5;
+//		else if (freq.equalsIgnoreCase("very frequent"))
+//			f = 0.90;
+//		else if (freq.equalsIgnoreCase("obligate"))
+//			f = 1;
+//		else
+//			System.err.println("Unknown frequency identifier: " + freq);
+//		return f;
 	}
 
 	/**
