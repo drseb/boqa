@@ -322,6 +322,7 @@ public class BOQACore {
 		for (int i = 0; i < result.size(); i++) {
 			ItemResultEntry newEntry = ItemResultEntry.create(i, result.getMarginal(i));
 			resultList.add(newEntry);
+
 		}
 
 		Collections.sort(resultList, new Comparator<ItemResultEntry>() {
