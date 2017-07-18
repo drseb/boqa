@@ -103,6 +103,11 @@ public class BoqaService {
 			if (m.find()) {
 				String diseaseName = m.group(1);
 				String dbAndId = m.group(2);
+
+				// dirty fix
+				if (dbAndId.contains("ORPHANET"))
+					dbAndId = dbAndId.replaceAll("ORPHANET", "ORPHA");
+
 				geneId2resultListSimple.put(boqaIdStr, new ResultEntry(boqaIdStr, dbAndId, diseaseName, score));
 			}
 			else {
