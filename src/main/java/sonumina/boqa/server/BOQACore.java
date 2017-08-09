@@ -26,7 +26,8 @@ import sonumina.math.graph.DirectedGraph;
 import sonumina.math.graph.SlimDirectedGraphView;
 
 /**
- * This is the server core for the boqa implementation. It main purpose is to maintain a separate id space of terms.
+ * This is the server core for the boqa implementation. It main purpose is to
+ * maintain a separate id space of terms.
  * 
  * @author Sebastian Bauer
  */
@@ -95,12 +96,11 @@ public class BOQACore {
 		AssociationContainer localAssociations;
 		try {
 
-			if (associationFileType.equals(Type.PAF)) {
-				AssociationParser.setUserdefinedType(Type.PAF);
+			if (associationFileType.equals(Type.PAF) || associationFileType.equals(Type.GPAF)) {
+				AssociationParser.setUserdefinedType(associationFileType);
 				AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
 				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
-			}
-			else {
+			} else {
 				AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
 				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
 			}
@@ -353,7 +353,8 @@ public class BOQACore {
 	}
 
 	/**
-	 * Returns the number of items annotated to the given term represented by the user id.
+	 * Returns the number of items annotated to the given term represented by the
+	 * user id.
 	 * 
 	 * @param serverId
 	 * @return
@@ -378,8 +379,8 @@ public class BOQACore {
 	}
 
 	/**
-	 * Returns the frequencies of the terms directly annotated to the given item. The order matches the order of
-	 * getTermsDirectlyAnnotatedTo().
+	 * Returns the frequencies of the terms directly annotated to the given item.
+	 * The order matches the order of getTermsDirectlyAnnotatedTo().
 	 * 
 	 * @param itemId
 	 * @return
@@ -411,7 +412,8 @@ public class BOQACore {
 	}
 
 	/**
-	 * Visits the ancestors of the given terms. For every visit, the visit method of the IAncestorVisitor interface is called.
+	 * Visits the ancestors of the given terms. For every visit, the visit method of
+	 * the IAncestorVisitor interface is called.
 	 * 
 	 * @param t
 	 */
@@ -440,7 +442,8 @@ public class BOQACore {
 	}
 
 	/**
-	 * Currently on PAF is supported. If not PAF is given the standard ontologizer AssociationParser behaviour is used.
+	 * Currently on PAF is supported. If not PAF is given the standard ontologizer
+	 * AssociationParser behaviour is used.
 	 * 
 	 * @param type
 	 */

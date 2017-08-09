@@ -26,12 +26,31 @@ public class BoqaService {
 
 	private BOQACore boqaCore;
 	private Ontology ontology;
-	// private HashMap<String, String> itemName2itemRealId;
 
+	/**
+	 * Will use default AssociationFileType --> Type.PAF
+	 * 
+	 * @param hpOboFilePath
+	 * @param annotationFilePath
+	 */
 	public BoqaService(String hpOboFilePath, String annotationFilePath) {
 
 		System.out.println("init new BoqaService");
 		BOQACore.setAssociationFileType(Type.PAF);
+		boqaCore = new BOQACore(hpOboFilePath, annotationFilePath);
+		this.ontology = boqaCore.getOntology();
+	}
+
+	/**
+	 * @param hpOboFilePath
+	 * @param annotationFilePath
+	 * @param associationFileType
+	 *            must be PAF or GPAF
+	 */
+	public BoqaService(String hpOboFilePath, String annotationFilePath, Type associationFileType) {
+
+		System.out.println("init new BoqaService");
+		BOQACore.setAssociationFileType(associationFileType);
 		boqaCore = new BOQACore(hpOboFilePath, annotationFilePath);
 		this.ontology = boqaCore.getOntology();
 	}
@@ -59,8 +78,7 @@ public class BoqaService {
 			Term t = ontology.getTermIncludingAlternatives(id);
 			if (t != null) {
 				queryTerms.add(t);
-			}
-			else {
+			} else {
 				System.err.println("could not find : " + id + " in ontoloy");
 			}
 		}
@@ -109,8 +127,7 @@ public class BoqaService {
 					dbAndId = dbAndId.replaceAll("ORPHANET", "ORPHA");
 
 				geneId2resultListSimple.put(boqaIdStr, new ResultEntry(boqaIdStr, dbAndId, diseaseName, score));
-			}
-			else {
+			} else {
 				System.err.println("no match of pattern " + boqaIdAndNameField.pattern() + " in " + idAndName);
 			}
 

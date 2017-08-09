@@ -82,12 +82,17 @@ import sonumina.math.distribution.ApproximatedEmpiricalDistribution;
 import sonumina.math.graph.SlimDirectedGraphView;
 
 /**
- * This is core class implementing BOQA. Currently, it also implements other procedures based on semantic similarity measures but this is
- * planned to be refactored. Thus, at the moment you will find also some methods and options to work with semantic similarities.
+ * This is core class implementing BOQA. Currently, it also implements other
+ * procedures based on semantic similarity measures but this is planned to be
+ * refactored. Thus, at the moment you will find also some methods and options
+ * to work with semantic similarities.
  * 
- * In order to perform the calculation, you need to setup a new BOQA object, invoke some methods to alter some options such as
- * setPrecalculateScoreDistribution() or setConsiderFrequenciesOnly() etc and finally call setup() with ontologies and associations. One can
- * then use assignMarginals() on the observations to obtain marginal probabilities according to the BOQA model.
+ * In order to perform the calculation, you need to setup a new BOQA object,
+ * invoke some methods to alter some options such as
+ * setPrecalculateScoreDistribution() or setConsiderFrequenciesOnly() etc and
+ * finally call setup() with ontologies and associations. One can then use
+ * assignMarginals() on the observations to obtain marginal probabilities
+ * according to the BOQA model.
  * 
  * <pre>
  * {
@@ -105,8 +110,9 @@ import sonumina.math.graph.SlimDirectedGraphView;
  * }
  * </pre>
  * 
- * Note that most times one refers to terms by plain ids. The id space matches the id space of the associated slim graph. Several
- * convenience methods are provided to convert or access the data.
+ * Note that most times one refers to terms by plain ids. The id space matches
+ * the id space of the associated slim graph. Several convenience methods are
+ * provided to convert or access the data.
  * 
  * Refer to the BOQATest class for a working example usage.
  * 
@@ -138,7 +144,8 @@ public class BOQA {
 	private int[][] items2Terms;
 
 	/**
-	 * For each item, contains the term ids which need to be switched on, if the previous item was on.
+	 * For each item, contains the term ids which need to be switched on, if the
+	 * previous item was on.
 	 */
 	private int[][] diffOnTerms;
 
@@ -166,14 +173,16 @@ public class BOQA {
 	private int[][] items2DirectTerms;
 
 	/**
-	 * Links items to the frequencies of corresponding directly associated terms. Frequencies are interpreted as probabilities that the
-	 * corresponding term is on.
+	 * Links items to the frequencies of corresponding directly associated terms.
+	 * Frequencies are interpreted as probabilities that the corresponding term is
+	 * on.
 	 */
 	private double[][] items2TermFrequencies;
 
 	/**
-	 * This contains the (ascending) order of the items2TermFrequencies, E.g., use item2TermFrequenciesOrder[0][2] to determine the term
-	 * that is associated to first item and has the third lowest frequency.
+	 * This contains the (ascending) order of the items2TermFrequencies, E.g., use
+	 * item2TermFrequenciesOrder[0][2] to determine the term that is associated to
+	 * first item and has the third lowest frequency.
 	 */
 	private int[][] item2TermFrequenciesOrder;
 
@@ -299,7 +308,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Returns the number of terms that can be selected to be on during the simulation.
+	 * Returns the number of terms that can be selected to be on during the
+	 * simulation.
 	 * 
 	 * @return
 	 */
@@ -308,7 +318,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Set alpha value used for generateObservations() and used for the ideal FABN scoring.
+	 * Set alpha value used for generateObservations() and used for the ideal FABN
+	 * scoring.
 	 * 
 	 * @param alpha
 	 */
@@ -326,7 +337,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Set beta value used for generateObservations() and used for the ideal FABN scoring.
+	 * Set beta value used for generateObservations() and used for the ideal FABN
+	 * scoring.
 	 * 
 	 * @param alpha
 	 */
@@ -416,7 +428,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Sets whether the matrix that contains the max ic term of two given terms shall be precalculated.
+	 * Sets whether the matrix that contains the max ic term of two given terms
+	 * shall be precalculated.
 	 * 
 	 * @param precalc
 	 */
@@ -587,8 +600,7 @@ public class BOQA {
 				return Configuration.NodeCase.TRUE_POSITIVE;
 			else
 				return Configuration.NodeCase.FALSE_NEGATIVE;
-		}
-		else {
+		} else {
 			/* Term is truly off */
 			if (!observed[node])
 				return Configuration.NodeCase.TRUE_NEGATIVE;
@@ -598,7 +610,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Determines the cases of the observed states given the hidden states. Accumulates them in states.
+	 * Determines the cases of the observed states given the hidden states.
+	 * Accumulates them in states.
 	 * 
 	 * @param observedTerms
 	 * @param hidden
@@ -614,7 +627,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Indicates whether we want to measure the time of the algorithm. Used for profiling.
+	 * Indicates whether we want to measure the time of the algorithm. Used for
+	 * profiling.
 	 */
 	private static final boolean MEASURE_TIME = false;
 
@@ -628,13 +642,17 @@ public class BOQA {
 	 * @param takeFrequenciesIntoAccount
 	 *            select, if frequencies should be taken into account.
 	 * @param previousHidden
-	 *            is the storage used to store the hidden states. It must correspond to the states of the previous item (item - 1). If this
-	 *            is the first item, all elements must be initialized to 0. The supplied object will be updated upon the return of this
-	 *            function with the state of specified item.
+	 *            is the storage used to store the hidden states. It must correspond
+	 *            to the states of the previous item (item - 1). If this is the
+	 *            first item, all elements must be initialized to 0. The supplied
+	 *            object will be updated upon the return of this function with the
+	 *            state of specified item.
 	 * @param previousStats
-	 *            is should correspond to the configuration of the previous item (i.e., item - 1. If the configuration for the first item
-	 *            shall be determined it should correspond to the configuration if no item is active. The supplied object will be updated
-	 *            upon the return of this function with the state of specified item.
+	 *            is should correspond to the configuration of the previous item
+	 *            (i.e., item - 1. If the configuration for the first item shall be
+	 *            determined it should correspond to the configuration if no item is
+	 *            active. The supplied object will be updated upon the return of
+	 *            this function with the state of specified item.
 	 * @return
 	 */
 	private WeightedConfigurationList determineCasesForItem(int item, boolean[] observed, boolean takeFrequenciesIntoAccount,
@@ -663,8 +681,8 @@ public class BOQA {
 
 			if (previousHidden == null) {
 				/*
-				 * If no previous state was given, we have to explicitly generate the state of the previous item. Obviously, this will be
-				 * much slower.
+				 * If no previous state was given, we have to explicitly generate the state of
+				 * the previous item. Obviously, this will be much slower.
 				 */
 				hidden = new boolean[numTerms];
 				stats = new Configuration();
@@ -675,8 +693,7 @@ public class BOQA {
 							hidden[term2Ancestors[prevItemDirectTerms[i]][j]] = true;
 				}
 				determineCases(observed, hidden, stats);
-			}
-			else {
+			} else {
 				hidden = previousHidden;
 				stats = previousStats;
 			}
@@ -716,12 +733,10 @@ public class BOQA {
 					if (!oldStats.equals(stats))
 						throw new RuntimeException("States don't match");
 					statsList.add(oldStats, 0);
-				}
-				else {
+				} else {
 					statsList.add(stats.clone(), 0);
 				}
-			}
-			else {
+			} else {
 				/* Initialize stats */
 				if (previousHidden != null) {
 					for (int i = 0; i < hidden.length; i++)
@@ -731,7 +746,8 @@ public class BOQA {
 				determineCases(observed, hidden, stats);
 
 				/*
-				 * Loop over all tracked configurations that may appear due to the given item being active
+				 * Loop over all tracked configurations that may appear due to the given item
+				 * being active
 				 */
 				for (int c = 0; c < diffOnTermsFreqs[item].length; c++) {
 					int[] diffOn = diffOnTermsFreqs[item][c];
@@ -759,14 +775,14 @@ public class BOQA {
 					statsList.add(stats.clone(), factors[item][c]);
 				}
 			}
-		}
-		else {
+		} else {
 			/* TODO: Move this into a test */
 			int numTermsWithExplicitFrequencies = 0;
 			if (takeFrequenciesIntoAccount) {
 				/*
-				 * Determine the number of terms that have non-1.0 frequency. We restrict them to the top 6 (the less probable) due to
-				 * complexity issues and hope that this a good enough approximation.
+				 * Determine the number of terms that have non-1.0 frequency. We restrict them
+				 * to the top 6 (the less probable) due to complexity issues and hope that this
+				 * a good enough approximation.
 				 */
 				for (int i = 0; i < numAnnotatedTerms && i < maxFrequencyTerms; i++) {
 					if (items2TermFrequencies[item][item2TermFrequenciesOrder[item][i]] >= 1.0)
@@ -775,7 +791,10 @@ public class BOQA {
 				}
 			}
 
-			/* We try each possible activity/inactivity combination of terms with explicit frequencies */
+			/*
+			 * We try each possible activity/inactivity combination of terms with explicit
+			 * frequencies
+			 */
 			SubsetGenerator sg = new SubsetGenerator(numTermsWithExplicitFrequencies, numTermsWithExplicitFrequencies);// numTermsWithExplicitFrequencies);
 			SubsetGenerator.Subset s;
 
@@ -823,10 +842,12 @@ public class BOQA {
 	}
 
 	/**
-	 * Returns the log probability that the given term has the observed state given the hidden states.
+	 * Returns the log probability that the given term has the observed state given
+	 * the hidden states.
 	 * 
-	 * If one of its more specific terms (descendants in this case) are on then the probability that the observed term is on is one.
-	 * Otherwise the probability depends on the false-positive/false-negative rate.
+	 * If one of its more specific terms (descendants in this case) are on then the
+	 * probability that the observed term is on is one. Otherwise the probability
+	 * depends on the false-positive/false-negative rate.
 	 * 
 	 * @param termIndex
 	 * @param alpha
@@ -1004,14 +1025,12 @@ public class BOQA {
 						activateAncestors(items2DirectTerms[item][i], observations);
 
 						numPositive++;
-					}
-					else {
+					} else {
 						numMissedInHidden++;
 					}
 				}
 
-			}
-			else {
+			} else {
 				for (i = 0; i < items2Terms[item].length; i++) {
 					hidden[items2Terms[item][i]] = true;
 					observations[items2Terms[item][i]] = true;
@@ -1027,8 +1046,7 @@ public class BOQA {
 						falseNegative[numFalseNegative++] = i;
 						// System.out.println("false negative " + i);
 					}
-				}
-				else {
+				} else {
 					if (r < ALPHA) {
 						falsePositive[numFalsePositive++] = i;
 						// System.out.println("false positive " + i);
@@ -1038,13 +1056,15 @@ public class BOQA {
 
 			/* apply false negatives */
 			if (areFalseNegativesPropagated()) {
-				/* false negative, but also make all descendants negative. They are considered as inherited in this case */
+				/*
+				 * false negative, but also make all descendants negative. They are considered
+				 * as inherited in this case
+				 */
 				for (i = 0; i < numFalseNegative; i++) {
 					observations[falseNegative[i]] = false;
 					deactivateDecendants(falseNegative[i], observations);
 				}
-			}
-			else {
+			} else {
 				/* false negative */
 				for (i = 0; i < numFalseNegative; i++)
 					observations[falseNegative[i]] = false;
@@ -1063,8 +1083,7 @@ public class BOQA {
 					observations[falsePositive[i]] = true;
 					activateAncestors(falsePositive[i], observations);
 				}
-			}
-			else {
+			} else {
 				/* False positive */
 				for (i = 0; i < numFalsePositive; i++)
 					observations[falsePositive[i]] = true;
@@ -1086,8 +1105,7 @@ public class BOQA {
 					for (int j = 0; j < maxTerms; j++) {
 						int r = rnd.nextInt(mostSpecific.length - j);
 						newTerms[j] = mostSpecific[r];
-						mostSpecific[r] = mostSpecific[mostSpecific.length - j
-								- 1]; /* Move last selectable term into the place of the chosen one */
+						mostSpecific[r] = mostSpecific[mostSpecific.length - j - 1]; /* Move last selectable term into the place of the chosen one */
 					}
 					for (int j = 0; j < observations.length; j++)
 						observations[j] = false;
@@ -1116,8 +1134,7 @@ public class BOQA {
 					if (!hidden[i])
 						numFalsePositive++;
 					numPositive++;
-				}
-				else {
+				} else {
 					if (hidden[i])
 						numFalseNegative++;
 				}
@@ -1211,8 +1228,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Calculates a "fingerprint" for the current data. Note that the fingerprint is not necessary unqiue but it should be sufficient for
-	 * the purpose.
+	 * Calculates a "fingerprint" for the current data. Note that the fingerprint is
+	 * not necessary unqiue but it should be sufficient for the purpose.
 	 * 
 	 * @return
 	 */
@@ -1249,7 +1266,8 @@ public class BOQA {
 		provideGlobals(associations, itemsToBeConsidered);
 
 		/*
-		 * If we want to consider items with frequencies only, we like to shrink the item list to contain only the relevant items.
+		 * If we want to consider items with frequencies only, we like to shrink the
+		 * item list to contain only the relevant items.
 		 */
 		if (CONSIDER_FREQUENCIES_ONLY) {
 			System.out.println("WARNING: only considering items with frequency information");
@@ -1268,7 +1286,10 @@ public class BOQA {
 			System.out.println("Considering " + slimGraph.getNumberOfVertices() + " terms");
 		}
 
-		/** Here we precalculate the jaccard similiartiy of two given terms in a dense matrix */
+		/**
+		 * Here we precalculate the jaccard similiartiy of two given terms in a dense
+		 * matrix
+		 */
 		if (PRECALCULATE_JACCARD) {
 			logger.info("Calculating Jaccard");
 			double[][] newJaccardMatrix = new double[slimGraph.getNumberOfVertices()][];
@@ -1295,7 +1316,10 @@ public class BOQA {
 			logger.info("Calculated max ICs");
 		}
 
-		/** Here we precalculate for each item the term which contributes as maximum ic term to the resnick calculation */
+		/**
+		 * Here we precalculate for each item the term which contributes as maximum ic
+		 * term to the resnick calculation
+		 */
 		if (PRECALCULATE_ITEM_MAXS) {
 			logger.info("Calculating item maxs");
 			resnikTermSim.maxScoreForItem = new double[allItemList.size()][slimGraph.getNumberOfVertices()];
@@ -1339,8 +1363,9 @@ public class BOQA {
 	 */
 	public void writeDOTExample(File out, HashSet<TermID> hpoTerms) {
 		/*
-		 * Basically, this defines a new command \maxbox whose text width as given by the second argument is not wider than the first
-		 * argument. The text which is then displayed in the box is used from the third argument.
+		 * Basically, this defines a new command \maxbox whose text width as given by
+		 * the second argument is not wider than the first argument. The text which is
+		 * then displayed in the box is used from the third argument.
 		 */
 		String preamble = "d2tfigpreamble=\"\\ifthenelse{\\isundefined{\\myboxlen}}{\\newlength{\\myboxlen}}{}"
 				+ "\\newcommand*{\\maxbox}[3]{\\settowidth{\\myboxlen}{#2}" + "\\ifdim#1<\\myboxlen" + "\\parbox{#1}{\\centering#3}" + "\\else"
@@ -1409,7 +1434,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Provides some global variables, given the global graph, the global associations and the items.
+	 * Provides some global variables, given the global graph, the global
+	 * associations and the items.
 	 * 
 	 * @param allItemsToBeConsidered
 	 */
@@ -1453,8 +1479,7 @@ public class BOQA {
 					builder.append(ev.toString());
 				logger.info(builder.toString());
 			}
-		}
-		else {
+		} else {
 			/* Means take everything */
 			evidences = null;
 		}
@@ -1467,9 +1492,13 @@ public class BOQA {
 
 		/* Term stuff */
 		/* fix by sebastian / I removed the following two lines */
-		// Ontology inducedGraph = graph.getInducedGraph(termEnumerator.getAllAnnotatedTermsAsList());
+		// Ontology inducedGraph =
+		// graph.getInducedGraph(termEnumerator.getAllAnnotatedTermsAsList());
 		// slimGraph = inducedGraph.getSlimGraphView();
-		/* the following line is required to not break the system when terms are in the query that have not been seen before */
+		/*
+		 * the following line is required to not break the system when terms are in the
+		 * query that have not been seen before
+		 */
 		slimGraph = graph.getSlimGraphView();
 
 		term2Parents = slimGraph.vertexParents;
@@ -1572,7 +1601,8 @@ public class BOQA {
 
 			// Disabled
 			// if (as.getAssociations().size() != items2DirectTerms[i].length)
-			// throw new IllegalArgumentException("Number of associations differs (" + as.getAssociations().size() + ") from the number of
+			// throw new IllegalArgumentException("Number of associations differs (" +
+			// as.getAssociations().size() + ") from the number of
 			// directly annotated terms (" + items2DirectTerms[i].length + ").");
 
 			for (int j = 0; j < items2DirectTerms[i].length; j++) {
@@ -1690,25 +1720,29 @@ public class BOQA {
 		// if (fractionalPart == null || fractionalPart.length() == 0)
 		// fractionalPart = "0";
 		//
-		// f = Double.parseDouble(matcher.group(1)) + Double.parseDouble(fractionalPart) / Math.pow(10, fractionalPart.length());
+		// f = Double.parseDouble(matcher.group(1)) + Double.parseDouble(fractionalPart)
+		// / Math.pow(10, fractionalPart.length());
 		// f /= 100.0;
 		// return f;
 		// }
 		// matcher = frequencyFractionPattern.matcher(freq);
 		// // 12/30
 		// if (matcher.matches()) {
-		// f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
+		// f = Double.parseDouble(matcher.group(1)) /
+		// Double.parseDouble(matcher.group(2));
 		// return f;
 		// }
 		// // 12 of 30
 		// matcher = NofMPattern.matcher(freq);
 		// if (matcher.matches()) {
-		// f = Double.parseDouble(matcher.group(1)) / Double.parseDouble(matcher.group(2));
+		// f = Double.parseDouble(matcher.group(1)) /
+		// Double.parseDouble(matcher.group(2));
 		// return f;
 		// }
 		//
 		// // replace some of the legacy wordings:
-		// if (freq.equalsIgnoreCase("typical") || freq.equalsIgnoreCase("common") || freq.equalsIgnoreCase("variable")) {
+		// if (freq.equalsIgnoreCase("typical") || freq.equalsIgnoreCase("common") ||
+		// freq.equalsIgnoreCase("variable")) {
 		// freq = "frequent";
 		// }
 		// if (freq.equalsIgnoreCase("hallmark")) {
@@ -1784,12 +1818,14 @@ public class BOQA {
 	}
 
 	/**
-	 * Returns marginal probabilities for the (sparsely) given queries/observations. The terms are specified as plain int values that range
-	 * between 0 and the number of the terms of the ontology.
+	 * Returns marginal probabilities for the (sparsely) given queries/observations.
+	 * The terms are specified as plain int values that range between 0 and the
+	 * number of the terms of the ontology.
 	 * 
 	 * @param takeFrequenciesIntoAccount
 	 * @param observations
-	 *            the ids of the terms. All specified terms are considered to be on. All other are considered to be off.
+	 *            the ids of the terms. All specified terms are considered to be on.
+	 *            All other are considered to be off.
 	 * @return
 	 */
 	public Result assignMarginals(boolean takeFrequenciesIntoAccount, int... observations) {
@@ -1938,16 +1974,19 @@ public class BOQA {
 			res.marginals[i] = Math.min(Math.exp(res.scores[i] - normalization), 1);
 			res.marginalsIdeal[i] = Math.min(Math.exp(idealScores[i] - idealNormalization), 1);
 
-			// System.out.println(i + ": " + idealScores[i] + " (" + res.getMarginalIdeal(i) + ") " + res.scores[i] + " (" +
+			// System.out.println(i + ": " + idealScores[i] + " (" + res.getMarginalIdeal(i)
+			// + ") " + res.scores[i] + " (" +
 			// res.getMarginal(i) + ")");
 			// System.out.println(res.marginals[i] + " " + res.marginalsIdeal[i]);
 		}
 
 		if (benchmarkObservations != null) {
 			/*
-			 * There is a possibility that ideal marginal is not as good as the marginal for the unknown parameter situation, i.e., if the
-			 * initial signal got such disrupted that another item is more likely. This may produce strange plots. Therefore, we take the
-			 * parameter estimated marginals as the ideal one if they match the reality better.
+			 * There is a possibility that ideal marginal is not as good as the marginal for
+			 * the unknown parameter situation, i.e., if the initial signal got such
+			 * disrupted that another item is more likely. This may produce strange plots.
+			 * Therefore, we take the parameter estimated marginals as the ideal one if they
+			 * match the reality better.
 			 */
 			if (res.marginalsIdeal[benchmarkObservations.item] < res.marginals[benchmarkObservations.item]) {
 				for (i = 0; i < allItemList.size(); i++)
@@ -1988,8 +2027,7 @@ public class BOQA {
 		if (term2Ancestors[t1].length > term2Ancestors[t2].length) {
 			ancestorsA = term2Ancestors[t1];
 			ancestorsB = term2Ancestors[t2];
-		}
-		else {
+		} else {
 			ancestorsA = term2Ancestors[t1];
 			ancestorsB = term2Ancestors[t2];
 		}
@@ -2051,7 +2089,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Returns a minimal length array of terms of which the induced graph is the same as of the given terms. These are the leaf terms.
+	 * Returns a minimal length array of terms of which the induced graph is the
+	 * same as of the given terms. These are the leaf terms.
 	 * 
 	 * @param terms
 	 * @return
@@ -2075,7 +2114,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Gets a sparse representation of the most specific terms in the observation map.
+	 * Gets a sparse representation of the most specific terms in the observation
+	 * map.
 	 * 
 	 * @param observations
 	 * @return
@@ -2125,8 +2165,9 @@ public class BOQA {
 		private ReentrantReadWriteLock scoreDistributionLock = new ReentrantReadWriteLock();
 
 		/**
-		 * Returns the score distribution for the given item for the given query size. If the score distribution has not been created yet,
-		 * create it using the supplied queries.
+		 * Returns the score distribution for the given item for the given query size.
+		 * If the score distribution has not been created yet, create it using the
+		 * supplied queries.
 		 * 
 		 * @param querySize
 		 * @param item
@@ -2163,7 +2204,8 @@ public class BOQA {
 		}
 
 		/**
-		 * Sets up the score distribution. At the moment, this must be called before maxScoreForItem is setup.
+		 * Sets up the score distribution. At the moment, this must be called before
+		 * maxScoreForItem is setup.
 		 */
 		public void setupDistribution() {
 			/** Instantiates the query cache */
@@ -2261,7 +2303,10 @@ public class BOQA {
 							OutputStream underlyingStream = new GZIPOutputStream(new FileOutputStream(outFile));
 							ObjectOutputStream oos = new ObjectOutputStream(underlyingStream);
 
-							/* The fingerprint shall ensure that the score distribution and ontology/associations are compatible */
+							/*
+							 * The fingerprint shall ensure that the score distribution and
+							 * ontology/associations are compatible
+							 */
 							oos.writeInt(fingerprint());
 
 							/* Finally, Write store distribution */
@@ -2299,7 +2344,8 @@ public class BOQA {
 	};
 
 	/**
-	 * Term similarity measure according to Lin. Note that the similarity of terms with information content of 0 is defined as 1 here.
+	 * Term similarity measure according to Lin. Note that the similarity of terms
+	 * with information content of 0 is defined as 1 here.
 	 */
 	private final AbstractTermSim linTermSim = new AbstractTermSim() {
 		public double termSim(int t1, int t2) {
@@ -2332,7 +2378,8 @@ public class BOQA {
 	};
 
 	/**
-	 * Score two list of terms according to max-avg-of-best method using the given term similarity measure.
+	 * Score two list of terms according to max-avg-of-best method using the given
+	 * term similarity measure.
 	 * 
 	 * @param tl1
 	 * @param tl2
@@ -2472,7 +2519,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Score one list of terms vs. an item using the default method and using the supplied term similarity measure.
+	 * Score one list of terms vs. an item using the default method and using the
+	 * supplied term similarity measure.
 	 * 
 	 * @param tl1
 	 * @param item
@@ -2535,8 +2583,7 @@ public class BOQA {
 			if (CACHE_SCORE_DISTRIBUTION || PRECALCULATE_SCORE_DISTRIBUTION) {
 				ApproximatedEmpiricalDistribution d = termSim.getScoreDistribution(querySize, item, queries);
 				res.marginals[item] = 1 - (d.cdf(score, false) - d.prob(score));
-			}
-			else {
+			} else {
 				int count = 0;
 
 				for (int j = 0; j < SIZE_OF_SCORE_DISTRIBUTION; j++) {
@@ -2547,8 +2594,7 @@ public class BOQA {
 
 				res.marginals[item] = count / (double) SIZE_OF_SCORE_DISTRIBUTION;
 			}
-		}
-		else {
+		} else {
 			int count = 0;
 			int[] shuffledTerms = newShuffledTerms();
 
@@ -2564,8 +2610,9 @@ public class BOQA {
 	}
 
 	/**
-	 * Makes the calculation according to a sim score avg max. We handle the observations as an item and compare it to all other items. Also
-	 * calculates the significance (stored in the marginal attribute).
+	 * Makes the calculation according to a sim score avg max. We handle the
+	 * observations as an item and compare it to all other items. Also calculates
+	 * the significance (stored in the marginal attribute).
 	 * 
 	 * @param observations
 	 * @param pval
@@ -2608,8 +2655,9 @@ public class BOQA {
 	}
 
 	/**
-	 * Makes the calculation according to Resnik avg max. We handle the observations as an item and compare it to all other items. Also
-	 * calculates the significance (stored in the marginal attribute).
+	 * Makes the calculation according to Resnik avg max. We handle the observations
+	 * as an item and compare it to all other items. Also calculates the
+	 * significance (stored in the marginal attribute).
 	 * 
 	 * @param observations
 	 *            the input observations.
@@ -2625,8 +2673,9 @@ public class BOQA {
 	}
 
 	/**
-	 * Makes the calculation according to Lin avg max. We handle the observations as an item and compare it to all other items. Also
-	 * calculates the significance (stored in the marginal attribute).
+	 * Makes the calculation according to Lin avg max. We handle the observations as
+	 * an item and compare it to all other items. Also calculates the significance
+	 * (stored in the marginal attribute).
 	 * 
 	 * @param observations
 	 *            the input observations.
@@ -2642,8 +2691,9 @@ public class BOQA {
 	}
 
 	/**
-	 * Makes the calculation according to JC avg max. We handle the observations as an item and compare it to all other items. Also
-	 * calculates the significance (stored in the marginal attribute).
+	 * Makes the calculation according to JC avg max. We handle the observations as
+	 * an item and compare it to all other items. Also calculates the significance
+	 * (stored in the marginal attribute).
 	 * 
 	 * @param observations
 	 *            the input observations.
@@ -2672,7 +2722,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Returns the msim according to Mathur and Dinakarpadnian, i.e., the maximum simimlarity between t1 and all of tl2.
+	 * Returns the msim according to Mathur and Dinakarpadnian, i.e., the maximum
+	 * simimlarity between t1 and all of tl2.
 	 * 
 	 * @param t1
 	 * @param tl2
@@ -2715,8 +2766,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Makes the calculation according to Mathur and Dinakarpadnian. We handle the observations as an item and compare it to all other
-	 * items.
+	 * Makes the calculation according to Mathur and Dinakarpadnian. We handle the
+	 * observations as an item and compare it to all other items.
 	 * 
 	 * @param observations
 	 *            the input observations.
@@ -2756,8 +2807,9 @@ public class BOQA {
 	private ReentrantReadWriteLock queriesLock = new ReentrantReadWriteLock();
 
 	/**
-	 * Returns an array containing randomized term query. In the returned array, the first index distinguishes each random query, and the
-	 * second index distinguishes the terms.
+	 * Returns an array containing randomized term query. In the returned array, the
+	 * first index distinguishes each random query, and the second index
+	 * distinguishes the terms.
 	 * 
 	 * @param rnd
 	 *            source of random.
@@ -2818,14 +2870,14 @@ public class BOQA {
 				}
 				tries++;
 			} while (!valid);
-		}
-		else {
+		} else {
 			choose(rnd, size, chosen, storage);
 		}
 	}
 
 	/**
-	 * Chooses size randomly selected values from storage. Storage is manipulated by this call. Selected values are stored in chosen.
+	 * Chooses size randomly selected values from storage. Storage is manipulated by
+	 * this call. Selected values are stored in chosen.
 	 * 
 	 * @param rnd
 	 * @param size
@@ -2837,8 +2889,9 @@ public class BOQA {
 	 */
 	public static void choose(Random rnd, int size, int[] chosen, int[] storage) {
 		/*
-		 * Choose terms randomly as the size of observed terms. We avoid drawing the same term but alter shuffledTerms such that it can be
-		 * used again in the next iteration. Note that this duplicates code from the above.
+		 * Choose terms randomly as the size of observed terms. We avoid drawing the
+		 * same term but alter shuffledTerms such that it can be used again in the next
+		 * iteration. Note that this duplicates code from the above.
 		 */
 		for (int k = 0; k < size; k++) {
 			int chosenIndex = rnd.nextInt(storage.length - k);
@@ -2855,7 +2908,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Returns the mica of term, i.e., the a common ancestor of the given terms whose information content is maximal.
+	 * Returns the mica of term, i.e., the a common ancestor of the given terms
+	 * whose information content is maximal.
 	 * 
 	 * @param t1
 	 * @param t2
@@ -2914,8 +2968,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Returns the frequencies of terms directly annotated to the given item. The order of the entries match the order of
-	 * getTermsDirectlyAnnotatedTo().
+	 * Returns the frequencies of terms directly annotated to the given item. The
+	 * order of the entries match the order of getTermsDirectlyAnnotatedTo().
 	 * 
 	 * @param itemId
 	 * @return
@@ -2945,7 +2999,8 @@ public class BOQA {
 	}
 
 	/**
-	 * Returns the evidence codes that should be respected. May be null in case all evidence codes are respected.
+	 * Returns the evidence codes that should be respected. May be null in case all
+	 * evidence codes are respected.
 	 * 
 	 * @return
 	 */
