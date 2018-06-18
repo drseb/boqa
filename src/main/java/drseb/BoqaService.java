@@ -78,12 +78,14 @@ public class BoqaService {
 			Term t = ontology.getTermIncludingAlternatives(id);
 			if (t != null) {
 				queryTerms.add(t);
-			} else {
+			}
+			else {
 				System.err.println("could not find : " + id + " in ontoloy");
 			}
 		}
 		if (queryTerms.size() < 1) {
-			throw new IllegalArgumentException("could not map any of the given query-ids to term-objects: " + queryTermIds);
+			throw new IllegalArgumentException(
+					"could not map any of the given query-ids to term-objects: " + queryTermIds);
 		}
 		return queryTerms;
 	}
@@ -127,7 +129,8 @@ public class BoqaService {
 					dbAndId = dbAndId.replaceAll("ORPHANET", "ORPHA");
 
 				geneId2resultListSimple.put(boqaIdStr, new ResultEntry(boqaIdStr, dbAndId, diseaseName, score));
-			} else {
+			}
+			else {
 				System.err.println("no match of pattern " + boqaIdAndNameField.pattern() + " in " + idAndName);
 			}
 
@@ -179,6 +182,7 @@ public class BoqaService {
 			this.score = score;
 		}
 
+		@Override
 		public int compareTo(ResultEntry o) {
 			if (this.score < o.score)
 				return 1;

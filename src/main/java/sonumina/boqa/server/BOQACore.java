@@ -86,7 +86,8 @@ public class BOQACore {
 		} catch (OBOParserException e1) {
 			e1.printStackTrace();
 		}
-		TermContainer goTerms = new TermContainer(oboParser.getTermMap(), oboParser.getFormatVersion(), oboParser.getDataVersion());
+		TermContainer goTerms = new TermContainer(oboParser.getTermMap(), oboParser.getFormatVersion(),
+				oboParser.getDataVersion());
 		logger.info("OBO file \"" + definitionPath + "\" parsed");
 
 		Ontology localOntology = Ontology.create(goTerms);
@@ -99,17 +100,20 @@ public class BOQACore {
 			if (associationFileType.equals(Type.PAF) || associationFileType.equals(Type.GPAF)) {
 				AssociationParser.setUserdefinedType(associationFileType);
 				AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
-				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
-			} else {
+				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(),
+						ap.getDbObject2gene());
+			}
+			else {
 				AssociationParser ap = new AssociationParser(associationPath, localOntology.getTermMap());
-				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(), ap.getDbObject2gene());
+				localAssociations = new AssociationContainer(ap.getAssociations(), ap.getSynonym2gene(),
+						ap.getDbObject2gene());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			localAssociations = new AssociationContainer();
 		}
 
-		logger.info("Got ontology and associations" + (System.currentTimeMillis() - start) / 1000d + "s");
+		logger.info("Got ontology and associations in " + (System.currentTimeMillis() - start) / 1000d + " seconds");
 
 		init(localOntology, localAssociations);
 	}
