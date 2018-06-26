@@ -1,6 +1,7 @@
 package drseb;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,13 +63,13 @@ public class BoqaService {
 	 *            List of Term-IDs
 	 * @return
 	 */
-	public HashMap<String, ResultEntry> scoreItems(ArrayList<String> queryTermIds) {
+	public HashMap<String, ResultEntry> scoreItems(Collection<String> queryTermIds) {
 
 		HashSet<Term> queryTerms = getQueryTerms(queryTermIds);
 		return scoreItems(queryTerms);
 	}
 
-	private HashSet<Term> getQueryTerms(ArrayList<String> queryTermIds) {
+	private HashSet<Term> getQueryTerms(Collection<String> queryTermIds) {
 		if (queryTermIds == null || queryTermIds.size() < 1) {
 			throw new IllegalArgumentException("given query term-ids invalid: " + queryTermIds);
 		}
