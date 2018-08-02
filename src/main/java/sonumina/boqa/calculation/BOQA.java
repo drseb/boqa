@@ -1374,6 +1374,7 @@ public class BOQA {
 		try {
 			GODOTWriter.writeDOT(graph.getInducedGraph(termEnumerator.getAllAnnotatedTermsAsList()), out, null, hpoTerms,
 					new AbstractDotAttributesProvider() {
+						@Override
 						public String getDotNodeAttributes(TermID id) {
 							String termName;
 							Term term = graph.getTerm(id);
@@ -1583,6 +1584,7 @@ public class BOQA {
 				public int termIdx;
 				public double freq;
 
+				@Override
 				public int compareTo(Freq o) {
 					if (freq > o.freq)
 						return 1;
@@ -2348,6 +2350,7 @@ public class BOQA {
 	 * with information content of 0 is defined as 1 here.
 	 */
 	private final AbstractTermSim linTermSim = new AbstractTermSim() {
+		@Override
 		public double termSim(int t1, int t2) {
 			double nominator = 2 * terms2IC[commonAncestorWithMaxIC(t1, t2)];
 			double denominator = terms2IC[t1] + terms2IC[t2];
@@ -2368,7 +2371,7 @@ public class BOQA {
 	private final AbstractTermSim jcTermSim = new AbstractTermSim() {
 		@Override
 		public double termSim(int t1, int t2) {
-			return ((double) 1) / (1 + terms2IC[t1] + terms2IC[t2] - 2 * terms2IC[commonAncestorWithMaxIC(t1, t2)]);
+			return (1) / (1 + terms2IC[t1] + terms2IC[t2] - 2 * terms2IC[commonAncestorWithMaxIC(t1, t2)]);
 		}
 
 		@Override
